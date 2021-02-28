@@ -1,5 +1,7 @@
 <template>
-  <business-capability-map />
+  <div class="relative w-screen">
+    <business-capability-map />
+  </div>
 </template>
 
 <script>

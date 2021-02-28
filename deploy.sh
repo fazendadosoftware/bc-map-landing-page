@@ -12,5 +12,5 @@ cd dist
 git init
 git add -A
 git commit -m 'deploy'
-git push -f git@github.com:fazendadosoftware/leanix-bc-map-mockup.git master:gh-pages
+git push -f git@github.com:fazendadosoftware/bc-map-landing-page.git master:gh-pages
 cd -

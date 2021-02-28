@@ -1,5 +1,5 @@
 <template>
-  <div class="text-xs flex flex-col pt-0 flex flex-col h-screen text-leanix-gray-dark" ref="container">
+  <div class="w-full text-xs flex flex-col pt-0 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
     <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-10 lg:px-16">
       <span class="w-full mb-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
         Business Capability Map
