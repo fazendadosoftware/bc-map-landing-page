@@ -33,7 +33,6 @@ const splitTextWidthBoldMarks = (doc, text = '', {
     .forEach((text, i) => {
       if (text) {
         const arrayOfNormalAndBoldText = text.split('**')
-        //  console.log('ARRAY OF', arrayOfNormalAndBoldText)
         arrayOfNormalAndBoldText.forEach((textItems, j) => {
           doc.setFont(boldOpen ? 'Axiforma-Regular' : 'Axiforma-Bold')
           if (j % 2 === 0) doc.setFont(boldOpen ? 'Axiforma-Bold' : 'Axiforma-Regular')
@@ -58,8 +57,6 @@ const bestPracticesSectionGenerator = async doc => {
   description = description.replace(/<\/?strong>/g, '**')
   const [x0, y0, w] = [685, 80, 150, 480]
 
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(x0, y0, w, h, 'F')
   // TITLE
   doc.setFont('Axiforma-ExtraBold')
   doc.setFontSize(20)
@@ -88,8 +85,6 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
   const colSpacing = 5
   const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
   const colWidth = (w - (maxColumns - 1) * colSpacing) / maxColumns
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(x0, y0, w, h, 'F')
 
   const padding = 6
   const childContainerWidth = colWidth - 2 * padding
@@ -114,7 +109,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
     const childTitleLineSpacing = 8
     doc.setFont('Axiforma-Bold')
     doc.setFontSize(childTitleFontSize)
-    doc.splitTextToSize(name.toUpperCase(), childContainerWidth)
+    doc.splitTextToSize(name.toUpperCase(), childContainerWidth - padding / 2)
       .forEach(line => {
         const txtWidth = (doc.getStringUnitWidth(line) * childTitleFontSize) / (72 / 25.6)
         const x = x0Col + padding + (childContainerWidth - txtWidth) / 2
@@ -139,13 +134,13 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
     doc.setFontSize(fontSize)
 
     children.forEach(child => {
-      y = y + padding
-      const childY0 = y - padding / 2
+      y = y + padding / 2
+      const childY0 = y
       const { name, children: grandChildren = [] } = child
       doc.setFont('Axiforma-Bold')
-      doc.splitTextToSize(name, childContainerWidth)
+      doc.splitTextToSize(name, childContainerWidth - padding / 2)
         .forEach(line => {
-          y += padding / 2
+          y += padding
           const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
           const x = x0 + (childContainerWidth - txtWidth) / 2
           text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
@@ -157,10 +152,11 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
       doc.setFont('Axiforma-Regular')
       grandChildren
         .forEach(({ name }, i) => {
+          y -= padding / 2
           const isLast = i === grandChildren.length - 1
-          doc.splitTextToSize(name, childContainerWidth)
+          doc.splitTextToSize(name, childContainerWidth - padding / 2)
             .forEach(line => {
-              y += padding / 2
+              y += padding
               const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
               const x = x0 + (childContainerWidth - txtWidth) / 2
               text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
@@ -199,8 +195,6 @@ export const generatePdf = async (selectedBcMap = null) => {
   const doc = new JsPDF({ orientation: 'landscape', unit: 'mm', format: [pageWidth, pageHeight] })
 
   // TITLE PLACEHOLDER
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(30, 30, 400, 30, 'F')
   doc.setFont('Axiforma-ExtraBold')
   doc.setFontSize(22)
   doc.setTextColor('#266ab9')
@@ -210,9 +204,6 @@ export const generatePdf = async (selectedBcMap = null) => {
   doc.text(30, 50, 'Business Capability Maps')
 
   // LOGO PLACEHOLDER
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(670, 30, 140, 30, 'F')
-  // TODO: fix logo image
   doc.setFont('Axiforma-ExtraBold')
   doc.setFontSize(50)
   doc.setTextColor('#1F2F4B')
