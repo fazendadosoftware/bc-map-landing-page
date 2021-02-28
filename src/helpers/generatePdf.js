@@ -127,19 +127,19 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
 
   // SPACING BETWEEN THE TALLEST HEADER AND CHILD CONTAINERS
   y0 = Math.max(...ys) + padding
+
   // THIS ITERATION DRAWS THE CHID CONTAINERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
     const { backgroundColor, children = [] } = businessCapabilities[i] || {}
     const x0 = xs[i]
-    let y = y0
+    let y = y0 - padding
 
-    // doc.setFillColor('#ff0000')
-    // doc.roundedRect(x0, y0, childContainerWidth, 10, 1.6, 1.6, 'F')
     const fontSize = 10
 
     doc.setFontSize(fontSize)
 
     children.forEach(child => {
+      y = y + padding
       const childY0 = y - padding / 2
       const { name, children: grandChildren = [] } = child
       doc.setFont('Axiforma-Bold')
