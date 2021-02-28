@@ -201,7 +201,14 @@ export const generatePdf = async (selectedBcMap = null) => {
   doc.text(30, 30, 'BEST PRACTICES TO DEFINE')
   doc.setFontSize(50)
   doc.setTextColor('#1F2F4B')
-  doc.text(30, 50, 'Business Capability Maps')
+  const title = 'Business Capability Map'
+  const titleWidth = (doc.getStringUnitWidth(title) * 50) / (72 / 25.6)
+  doc.text(30, 50, title)
+  if (name.toLowerCase() !== 'default') {
+    doc.setFontSize(30)
+    doc.setTextColor('#8995AF')
+    doc.text(30 + titleWidth, 50, ` for ${name} Industry`)
+  }
 
   // LOGO PLACEHOLDER
   doc.setFont('Axiforma-ExtraBold')
