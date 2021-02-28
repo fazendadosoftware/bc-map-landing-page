@@ -180,7 +180,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
   box.forEach(([x0, y0, w, h]) => doc.roundedRect(x0, y0, w, h, 1.6, 1.6, 'F'))
 
   line
-    .forEach(([x1, y1, x2, y2, drawColor]) => { doc.setDrawColor(drawColor); doc.line(x1, y1, x2, y2) })
+    .forEach(([x1, y1, x2, y2, drawColor]) => { doc.setDrawColor(drawColor); doc.line(x1 + 0.01, y1, x2 - 0.01, y2) })
 
   text
     .forEach(({ x, y, text, font, fontSize, textColor }) => {
