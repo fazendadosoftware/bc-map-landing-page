@@ -1,0 +1,39 @@
+{
+  "title": "Best practices",
+  "description": "<strong>Business capability modeling</strong> is a technique for the representation of an organization’s business anchor model, independent of the organization’s structure, processes, people, or domains.",
+  "paragraphs": [
+    {
+      "title": "Don’t overlap",
+      "description": "Good capabilities do not overlap; they are mutually exclusive. A good test is to check whether you can assign Level 2 capabilities without ambiguity."
+    },
+    {
+      "title": "Define “What”; not “How”",
+      "description": "Business capabilities encapsulate what a business is doing right now and what it must be doing to meet current and future challenges."
+    },
+    {
+      "title": "Long-term stability",
+      "description": "Properly defined business capabilities are fairly stable over time, persisting throughout any organizational changes. Only major model updates should affect them."
+    },
+    {
+      "title": "Cross-organizational",
+      "description": "Don’t focus too much on business units. Capabilities should remain the same and be independent of the current structure of the organization."
+    },
+    {
+      "title": "7 to 10 capabilities at the top level",
+      "description": "The highest level capabilities should be a complete description of your business. Aim to make your categories reflect key aspects of what the business actually does."
+    },
+    {
+      "title": "Breadth rather than depth",
+      "description": "Don’t go too deep. Illustrate the breadth of your organization’s business capabilities by going no more than three levels down. This will be enough to represent IT landscape of your enterprise."
+    },
+    {
+      "title": "Accepted by all stakeholders",
+      "description": "The goal of business capabilities is that they become a common basis for discussion and planning. Take every opportunity to anchor your organization's processes to the model."
+    },
+    {
+      "title": "Linking strategy and execution",
+      "description": "Involve those who define the strategies when creating your map. Consider strategy as one input when defining your business capabilities on the highest level."
+    }
+
+  ]
+}

@@ -1,0 +1,67 @@
+/* ./src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: 'Axiforma-Bold';
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
+    src: local('Axiforma-Bold'), 
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_0_0.woff2') format('woff2'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_0_0.woff') format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Axiforma-Medium';
+    font-display: swap;
+    font-weight: normal;
+      font-style: normal;
+    src: local('Axiforma-Medium'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_D_0.woff2') format('woff2'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_D_0.woff') format('woff');
+  }
+  
+  
+  @font-face {
+    font-family: 'Axiforma-ExtraBold';
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
+    src: local('Axiforma-ExtraBold'), 
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/webfonts/38E02A_8_0.woff2') format('woff2'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/webfonts/38E02A_8_0.woff') format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Axiforma-Regular';
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
+    src: local('Axiforma-Regular'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_F_0.woff2') format('woff2'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_F_0.woff') format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Axiforma-SemiBold';
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
+    src: local('Axiforma-SemiBold'), 
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_10_0.woff2') format('woff2'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_10_0.woff') format('woff');
+  }
+  
+  @font-face {
+    font-family: 'Axiforma-Thin';
+    font-display: swap;
+    font-weight: normal;
+    font-style: normal;
+    src: local('Axiforma-Thin'), 
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_12_0.woff2') format('woff2'),
+      url('https://www.leanix.net/hubfs/2019-LX-Website/General/Webfont%20Axiforma/Axiforma_new/39568C_12_0.woff') format('woff');
+  }
+}
