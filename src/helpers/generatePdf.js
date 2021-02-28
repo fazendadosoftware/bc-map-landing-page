@@ -96,6 +96,10 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
   const ys = []
   const xs = []
 
+  const box = []
+  const text = []
+  const line = []
+
   // THIS ITERATION DRAWS THE COLUMN CONTAINERS AND HEADERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
     const { name = '', backgroundColor } = businessCapabilities[i] || {}
@@ -110,12 +114,11 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
     const childTitleLineSpacing = 8
     doc.setFont('Axiforma-Bold')
     doc.setFontSize(childTitleFontSize)
-    doc.setTextColor('#FFFFFF')
     doc.splitTextToSize(name.toUpperCase(), childContainerWidth)
       .forEach(line => {
         const txtWidth = (doc.getStringUnitWidth(line) * childTitleFontSize) / (72 / 25.6)
         const x = x0Col + padding + (childContainerWidth - txtWidth) / 2
-        doc.text(x, y, line)
+        text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#ffffff' })
         y = y + childTitleLineSpacing
       })
     ys[i] = y
@@ -126,8 +129,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
   y0 = Math.max(...ys) + padding
   // THIS ITERATION DRAWS THE CHID CONTAINERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
-    // eslint-disable-next-line
-    const { children = [] } = businessCapabilities[i] || {}
+    const { backgroundColor, children = [] } = businessCapabilities[i] || {}
     const x0 = xs[i]
     let y = y0
 
@@ -138,7 +140,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
     doc.setFontSize(fontSize)
 
     children.forEach(child => {
-      // eslint-disable-next-line
+      const childY0 = y - padding / 2
       const { name, children: grandChildren = [] } = child
       doc.setFont('Axiforma-Bold')
       doc.splitTextToSize(name, childContainerWidth)
@@ -146,31 +148,47 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
           y += padding / 2
           const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
           const x = x0 + (childContainerWidth - txtWidth) / 2
-          doc.text(x, y, line)
+          text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
         })
-      doc.setDrawColor('#ffffff')
       y += padding / 2
-      doc.line(x0, y, x0 + childContainerWidth, y)
+      line.push([x0, y, x0 + childContainerWidth, y, backgroundColor])
       y += padding / 4
 
       doc.setFont('Axiforma-Regular')
       grandChildren
-        .forEach(({ name }) => {
+        .forEach(({ name }, i) => {
+          const isLast = i === grandChildren.length - 1
           doc.splitTextToSize(name, childContainerWidth)
             .forEach(line => {
               y += padding / 2
               const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
               const x = x0 + (childContainerWidth - txtWidth) / 2
-              doc.text(x, y, line)
+              text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
             })
-          doc.setDrawColor('#ffffff')
-          y += padding / 2
-          doc.line(x0, y, x0 + childContainerWidth, y)
-          y += padding / 4
+          if (!isLast) {
+            y += padding / 2
+            line.push([x0, y, x0 + childContainerWidth, y, '#e5e7eb'])
+            y += padding / 4
+          }
         })
       y += padding
+      box.push([x0, childY0, childContainerWidth, y - childY0 - padding / 2])
     })
   }
+
+  doc.setFillColor('#ffffff')
+  box.forEach(([x0, y0, w, h]) => doc.roundedRect(x0, y0, w, h, 1.6, 1.6, 'F'))
+
+  line
+    .forEach(([x1, y1, x2, y2, drawColor]) => { doc.setDrawColor(drawColor); doc.line(x1, y1, x2, y2) })
+
+  text
+    .forEach(({ x, y, text, font, fontSize, textColor }) => {
+      doc.setFont(font)
+      doc.setFontSize(fontSize)
+      doc.setTextColor(textColor)
+      doc.text(x, y, text)
+    })
 }
 
 export const generatePdf = async (selectedBcMap = null) => {
