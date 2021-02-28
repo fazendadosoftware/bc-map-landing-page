@@ -84,17 +84,92 @@ const bestPracticesSectionGenerator = async doc => {
 }
 
 const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
-  const [x0, y0, w, h] = [30, 80, 640, 480]
+  let [x0, y0, w, h] = [30, 80, 640, 480]
   const colSpacing = 5
-  const maxColumns = 8
+  const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
   const colWidth = (w - (maxColumns - 1) * colSpacing) / maxColumns
   // doc.setFillColor('#eeeeee')
   // doc.rect(x0, y0, w, h, 'F')
 
+  const padding = 6
+  const childContainerWidth = colWidth - 2 * padding
+  const ys = []
+  const xs = []
+
+  // THIS ITERATION DRAWS THE COLUMN CONTAINERS AND HEADERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
-    const { backgroundColor } = businessCapabilities[i] || {}
+    const { name = '', backgroundColor } = businessCapabilities[i] || {}
+    // COLUMN BOX
+    const x0Col = x0 + i * (colWidth + colSpacing)
     doc.setFillColor(backgroundColor)
-    doc.roundedRect(x0 + i * (colWidth + colSpacing), y0, colWidth, h, 1.6, 1.6, 'F')
+    doc.roundedRect(x0Col, y0, colWidth, h, 1.6, 1.6, 'F')
+
+    // BC NAME
+    let y = y0 + 2 * padding
+    const childTitleFontSize = 16
+    const childTitleLineSpacing = 8
+    doc.setFont('Axiforma-Bold')
+    doc.setFontSize(childTitleFontSize)
+    doc.setTextColor('#FFFFFF')
+    doc.splitTextToSize(name.toUpperCase(), childContainerWidth)
+      .forEach(line => {
+        const txtWidth = (doc.getStringUnitWidth(line) * childTitleFontSize) / (72 / 25.6)
+        const x = x0Col + padding + (childContainerWidth - txtWidth) / 2
+        doc.text(x, y, line)
+        y = y + childTitleLineSpacing
+      })
+    ys[i] = y
+    xs[i] = x0Col + padding
+  }
+
+  // SPACING BETWEEN THE TALLEST HEADER AND CHILD CONTAINERS
+  y0 = Math.max(...ys) + padding
+  // THIS ITERATION DRAWS THE CHID CONTAINERS
+  for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
+    // eslint-disable-next-line
+    const { children = [] } = businessCapabilities[i] || {}
+    const x0 = xs[i]
+    let y = y0
+
+    // doc.setFillColor('#ff0000')
+    // doc.roundedRect(x0, y0, childContainerWidth, 10, 1.6, 1.6, 'F')
+    const fontSize = 10
+
+    doc.setFontSize(fontSize)
+
+    children.forEach(child => {
+      // eslint-disable-next-line
+      const { name, children: grandChildren = [] } = child
+      doc.setFont('Axiforma-Bold')
+      doc.splitTextToSize(name, childContainerWidth)
+        .forEach(line => {
+          y += padding / 2
+          const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
+          const x = x0 + (childContainerWidth - txtWidth) / 2
+          doc.text(x, y, line)
+        })
+      doc.setDrawColor('#ffffff')
+      y += padding / 2
+      doc.line(x0, y, x0 + childContainerWidth, y)
+      y += padding / 4
+
+      doc.setFont('Axiforma-Regular')
+      grandChildren
+        .forEach(({ name }) => {
+          doc.splitTextToSize(name, childContainerWidth)
+            .forEach(line => {
+              y += padding / 2
+              const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
+              const x = x0 + (childContainerWidth - txtWidth) / 2
+              doc.text(x, y, line)
+            })
+          doc.setDrawColor('#ffffff')
+          y += padding / 2
+          doc.line(x0, y, x0 + childContainerWidth, y)
+          y += padding / 4
+        })
+      y += padding
+    })
   }
 }
 
