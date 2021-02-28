@@ -18,8 +18,7 @@
         </div>
         <export-dropdown-button
           @export-excel="exportAsExcel"
-          @export-pdf="exportAsPdf"
-          @export-svg="exportAsSvg"/>
+          @export-pdf="exportAsPdf"/>
       </div>
     </div>
     <transition
@@ -386,11 +385,13 @@ export default {
       const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)))
       const { saveAs } = await import('file-saver')
       saveAs(output, `${name}.pdf`)
-    },
+    }
+    /*
     async exportAsSvg () {
       const { default: generateSvg } = await import('@/helpers/generateSvg')
       generateSvg(this.$refs.container, this.selectedBcMap)
     }
+    */
   },
   async created () {
     await this.fetchBcs()

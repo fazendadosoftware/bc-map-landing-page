@@ -189,7 +189,6 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
 
 export const generatePdf = async (selectedBcMap = null) => {
   if (selectedBcMap === null) return
-  // eslint-disable-next-line
   const { name, children: businessCapabilities = [] } = selectedBcMap
   const [pageWidth, pageHeight] = [842, 597]
   const doc = new JsPDF({ orientation: 'landscape', unit: 'mm', format: [pageWidth, pageHeight] })
