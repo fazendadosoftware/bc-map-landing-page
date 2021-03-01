@@ -33,7 +33,7 @@
         :list="selectedBcMap.children"
         :group="{ name: 'g1' }"
         item-key="id"
-        handle=".handle"
+        :handle="editable ? '.handle' : '.no-handle'"
         :move="() => editable"
         class="flex-1 px-4 2xl:px-0 flex justify-between 2xl:justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
@@ -125,7 +125,7 @@
               :list="businessCapability.children"
               :group="{ name: 'g2' }"
               item-key="id"
-              handle=".handle"
+              :handle="editable ? '.handle' : '.no-handle'"
               :move="() => editable"
               class="flex-1 flex flex-col space-y-4 w-full p-4 pt-0 rounded-md"
               :component-data="{style: `background: ${businessCapability.backgroundColor}`}">
@@ -202,7 +202,8 @@
                     :list="child.children"
                     :group="{ name: 'g3' }"
                     item-key="id"
-                    :move="() => editable">
+                    :move="() => editable"
+                    :handle="editable ? '.bc-grandchildren' : '.no-handle'">
                     <template #item="{element: grandChild}">
                       <div
                         class="flex flex-col items-center border-b last:border-0 p-1 text-center hover:bg-gray-200 transition-colors relative last:rounded-b-md bc-grandchildren"
