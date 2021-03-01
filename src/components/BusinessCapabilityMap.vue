@@ -35,7 +35,7 @@
         item-key="id"
         handle=".handle"
         :move="() => editable"
-        class="flex-1 flex justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
+        class="flex-1 px-4 2xl:px-0 flex justify-between 2xl:justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
           <div
             class="handle flex flex-col rounded-md space-y-4 shadow-xl bc-col"
@@ -43,7 +43,7 @@
               'cursor-move': editable,
               'cursor-default': !editable
             }"
-            style="width: 200px"
+            style="min-width: 200px; width: 200px"
             :style="`background: ${businessCapability.backgroundColor}`"
             @mouseover="hovered = businessCapability.id"
             @mouseleave="hovered = null">
