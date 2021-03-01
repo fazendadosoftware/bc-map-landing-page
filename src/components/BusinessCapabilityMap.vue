@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full text-xs flex flex-col pt-0 px-4 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
+  <div class="w-full text-xs flex flex-col pt-0 px-2 2xl:px-4 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
     <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-16">
       <span class="w-full my-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
         Business Capability Map
@@ -35,10 +35,10 @@
         item-key="id"
         :handle="editable ? '.handle' : '.no-handle'"
         :move="() => editable"
-        class="flex-1 flex justify-between 2xl:justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
+        class="flex-1 flex justify-between 2xl:justify-center items-start space-x-2 2xl:space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
           <div
-            class="handle flex flex-col rounded-md space-y-4 shadow-xl bc-col"
+            class="handle flex flex-col rounded-md space-y-2 2xl:space-y-4 shadow-xl bc-col"
             :class="{
               'cursor-move': editable,
               'cursor-default': !editable
@@ -49,7 +49,7 @@
             @mouseleave="hovered = null">
             <div class="bg-white w-full sticky top-0 z-10">
               <div
-                class="text-white text-base font-axiformabold text-center leading-5 rounded-t-md -mb-4 p-4 min-h-coltitle flex items-center h-full justify-center"
+                class="text-white text-base font-axiformabold text-center leading-5 rounded-t-md -mb-2 2xl:-mb-4 p-2 2xl:p-4 min-h-coltitle flex items-center h-full justify-center"
                 :class="{
                   'rounded-md': !Array.isArray(businessCapability.children) || Array.isArray(businessCapability.children) && !businessCapability.children.length,
                   'rounded-t-md': Array.isArray(businessCapability.children) && businessCapability.children.length
@@ -127,7 +127,7 @@
               item-key="id"
               :handle="editable ? '.handle' : '.no-handle'"
               :move="() => editable"
-              class="flex-1 flex flex-col space-y-4 w-full p-4 pt-0 rounded-md"
+              class="flex-1 flex flex-col space-y-2 2xl:space-y-4 w-full p-2 2xl:p-4 pt-0 rounded-md"
               :component-data="{style: `background: ${businessCapability.backgroundColor}`}">
               <template #item="{element: child}">
                 <div class="bg-white rounded-md text-tiny w-full bc-child">
