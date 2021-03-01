@@ -86,7 +86,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
   const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
   const colWidth = (w - (maxColumns - 1) * colSpacing) / maxColumns
 
-  const padding = 6
+  const padding = 5.5
   const childContainerWidth = colWidth - 2 * padding
   const ys = []
   const xs = []
@@ -146,13 +146,13 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
           text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
         })
       y += padding / 2
-      line.push([x0, y, x0 + childContainerWidth, y, backgroundColor])
+      line.push([x0, y, x0 + childContainerWidth, y, backgroundColor, 0.4])
       y += padding / 4
 
       doc.setFont('Axiforma-Regular')
       grandChildren
         .forEach(({ name }, i) => {
-          y -= padding / 2
+          y -= padding / 4
           const isLast = i === grandChildren.length - 1
           doc.splitTextToSize(name, childContainerWidth - padding / 2)
             .forEach(line => {
@@ -176,7 +176,11 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
   box.forEach(([x0, y0, w, h]) => doc.roundedRect(x0, y0, w, h, 1.6, 1.6, 'F'))
 
   line
-    .forEach(([x1, y1, x2, y2, drawColor]) => { doc.setDrawColor(drawColor); doc.line(x1 + 0.01, y1, x2 - 0.01, y2) })
+    .forEach(([x1, y1, x2, y2, drawColor, width = 0.1]) => {
+      doc.setDrawColor(drawColor)
+      doc.setLineWidth(width)
+      doc.line(x1 + 0.01, y1, x2 - 0.01, y2)
+    })
 
   text
     .forEach(({ x, y, text, font, fontSize, textColor }) => {
