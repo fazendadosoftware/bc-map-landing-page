@@ -1,16 +1,16 @@
 <template>
-  <div class="w-full text-xs flex flex-col pt-0 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
-    <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-10 lg:px-16">
-      <span class="w-full mb-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
+  <div class="w-full text-xs flex flex-col pt-0 px-4 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
+    <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-16">
+      <span class="w-full my-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
         Business Capability Map
       </span>
       <industry-select
-        class="w-full lg:max-w-xs mx-8 lg:mx-0 bc-industry-select"
+        class="w-full lg:max-w-xs bc-industry-select"
         :bc-maps="bcMaps"
         :selected-bc-map="selectedBcMap"
         @bc-map-selected="bcMapSelectedHandler"/>
       <div class="flex-1"/>
-      <div class="flex justify-end items-center space-x-8 w-full lg:w-auto mx-8 lg:mx-0 my-2 lg:my-0">
+      <div class="flex justify-between items-center space-x-8 w-full lg:w-auto my-2 lg:mx-0">
         <div
           @click.stop="slideoverOpened = true"
           class="cursor-pointer hover:underline select-none">
@@ -35,7 +35,7 @@
         item-key="id"
         :handle="editable ? '.handle' : '.no-handle'"
         :move="() => editable"
-        class="flex-1 px-4 2xl:px-0 flex justify-between 2xl:justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
+        class="flex-1 flex justify-between 2xl:justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
           <div
             class="handle flex flex-col rounded-md space-y-4 shadow-xl bc-col"
