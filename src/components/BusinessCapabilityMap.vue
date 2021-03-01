@@ -49,7 +49,7 @@
             @mouseleave="hovered = null">
             <div class="bg-white w-full sticky top-0 z-10">
               <div
-                class="text-white text-base font-axiformabold text-center leading-5 rounded-t-md -mb-2 2xl:-mb-4 p-2 2xl:p-4 min-h-coltitle flex items-center h-full justify-center"
+                class="text-white text-base font-axiformabold text-center leading-5 rounded-t-md -mb-2 2xl:-mb-4 p-2 2xl:p-4 min-h-coltitlesm 2xl:min-h-coltitle flex items-center h-full justify-center"
                 :class="{
                   'rounded-md': !Array.isArray(businessCapability.children) || Array.isArray(businessCapability.children) && !businessCapability.children.length,
                   'rounded-t-md': Array.isArray(businessCapability.children) && businessCapability.children.length
