@@ -59,11 +59,13 @@ export default {
       {
         label: 'Export as PDF',
         callback: () => emit('export-pdf')
-      },
+      }
+      /*
       {
         label: 'Export as SVG',
         callback: () => emit('export-svg')
       }
+      */
     ])
     return {
       opened,

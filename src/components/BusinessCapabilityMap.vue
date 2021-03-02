@@ -1,16 +1,16 @@
 <template>
-  <div class="text-xs flex flex-col pt-0 flex flex-col h-screen text-leanix-gray-dark" ref="container">
-    <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-10 lg:px-16">
-      <span class="w-full mb-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
+  <div class="w-full text-xs flex flex-col pt-0 px-2.5 2xl:px-4 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
+    <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-16">
+      <span class="w-full my-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
         Business Capability Map
       </span>
       <industry-select
-        class="w-full lg:max-w-xs mx-8 lg:mx-0 bc-industry-select"
+        class="w-full lg:max-w-xs bc-industry-select"
         :bc-maps="bcMaps"
         :selected-bc-map="selectedBcMap"
         @bc-map-selected="bcMapSelectedHandler"/>
       <div class="flex-1"/>
-      <div class="flex justify-end items-center space-x-8 w-full lg:w-auto mx-8 lg:mx-0 my-2 lg:my-0">
+      <div class="flex justify-between items-center space-x-8 w-full lg:w-auto my-2 lg:mx-0">
         <div
           @click.stop="slideoverOpened = true"
           class="cursor-pointer hover:underline select-none">
@@ -18,8 +18,7 @@
         </div>
         <export-dropdown-button
           @export-excel="exportAsExcel"
-          @export-pdf="exportAsPdf"
-          @export-svg="exportAsSvg"/>
+          @export-pdf="exportAsPdf"/>
       </div>
     </div>
     <transition
@@ -34,23 +33,23 @@
         :list="selectedBcMap.children"
         :group="{ name: 'g1' }"
         item-key="id"
-        handle=".handle"
+        :handle="editable ? '.handle' : '.no-handle'"
         :move="() => editable"
-        class="flex-1 flex justify-center items-start space-x-4 overflow-auto relative bc-cols-container">
+        class="flex-1 flex justify-between 2xl:justify-center items-start space-x-2.5 2xl:space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
           <div
-            class="handle flex flex-col rounded-md space-y-4 shadow-xl bc-col"
+            class="handle flex flex-col rounded-md space-y-2.5 2xl:space-y-4 shadow-xl bc-col"
             :class="{
               'cursor-move': editable,
               'cursor-default': !editable
             }"
-            style="width: 200px"
+            style="min-width: 200px; width: 200px"
             :style="`background: ${businessCapability.backgroundColor}`"
             @mouseover="hovered = businessCapability.id"
             @mouseleave="hovered = null">
             <div class="bg-white w-full sticky top-0 z-10">
               <div
-                class="text-white text-base font-axiformabold text-center leading-5 rounded-t-md -mb-4 p-4 min-h-coltitle flex items-center h-full justify-center"
+                class="text-white text-base font-axiformabold text-center leading-5 rounded-t-md -mb-2 2xl:-mb-4 p-2.5 2xl:p-4 min-h-coltitlesm 2xl:min-h-coltitle flex items-center h-full justify-center"
                 :class="{
                   'rounded-md': !Array.isArray(businessCapability.children) || Array.isArray(businessCapability.children) && !businessCapability.children.length,
                   'rounded-t-md': Array.isArray(businessCapability.children) && businessCapability.children.length
@@ -126,9 +125,9 @@
               :list="businessCapability.children"
               :group="{ name: 'g2' }"
               item-key="id"
-              handle=".handle"
+              :handle="editable ? '.handle' : '.no-handle'"
               :move="() => editable"
-              class="flex-1 flex flex-col space-y-4 w-full p-4 pt-0 rounded-md"
+              class="flex-1 flex flex-col space-y-2.5 2xl:space-y-4 w-full p-2.5 2xl:p-4 pt-0 rounded-md"
               :component-data="{style: `background: ${businessCapability.backgroundColor}`}">
               <template #item="{element: child}">
                 <div class="bg-white rounded-md text-tiny w-full bc-child">
@@ -203,7 +202,8 @@
                     :list="child.children"
                     :group="{ name: 'g3' }"
                     item-key="id"
-                    :move="() => editable">
+                    :move="() => editable"
+                    :handle="editable ? '.bc-grandchildren' : '.no-handle'">
                     <template #item="{element: grandChild}">
                       <div
                         class="flex flex-col items-center border-b last:border-0 p-1 text-center hover:bg-gray-200 transition-colors relative last:rounded-b-md bc-grandchildren"
@@ -266,10 +266,10 @@
           </div>
         </template>
       </draggable>
-      <div v-else class="h-full flex justify-center items-center text-4xl">
+      <div v-else class="h-full flex justify-center items-center text-xl 2xl:text-4xl">
         <div class="flex items-center">
           <span class="mr-4">Loading</span>
-          <svg class="h-8 w-8 animate-spin transform rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="h-4 w-4 2xl:h-8 2xl:w-8 animate-spin transform rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
           </svg>
         </div>
@@ -386,11 +386,13 @@ export default {
       const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)))
       const { saveAs } = await import('file-saver')
       saveAs(output, `${name}.pdf`)
-    },
+    }
+    /*
     async exportAsSvg () {
       const { default: generateSvg } = await import('@/helpers/generateSvg')
       generateSvg(this.$refs.container, this.selectedBcMap)
     }
+    */
   },
   async created () {
     await this.fetchBcs()

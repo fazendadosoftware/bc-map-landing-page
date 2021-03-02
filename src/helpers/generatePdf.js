@@ -33,7 +33,6 @@ const splitTextWidthBoldMarks = (doc, text = '', {
     .forEach((text, i) => {
       if (text) {
         const arrayOfNormalAndBoldText = text.split('**')
-        //  console.log('ARRAY OF', arrayOfNormalAndBoldText)
         arrayOfNormalAndBoldText.forEach((textItems, j) => {
           doc.setFont(boldOpen ? 'Axiforma-Regular' : 'Axiforma-Bold')
           if (j % 2 === 0) doc.setFont(boldOpen ? 'Axiforma-Bold' : 'Axiforma-Regular')
@@ -58,8 +57,6 @@ const bestPracticesSectionGenerator = async doc => {
   description = description.replace(/<\/?strong>/g, '**')
   const [x0, y0, w] = [685, 80, 150, 480]
 
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(x0, y0, w, h, 'F')
   // TITLE
   doc.setFont('Axiforma-ExtraBold')
   doc.setFontSize(20)
@@ -84,42 +81,139 @@ const bestPracticesSectionGenerator = async doc => {
 }
 
 const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
-  const [x0, y0, w, h] = [30, 80, 640, 480]
+  let [x0, y0, w, h] = [30, 80, 640, 480]
   const colSpacing = 5
-  const maxColumns = 8
+  const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
   const colWidth = (w - (maxColumns - 1) * colSpacing) / maxColumns
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(x0, y0, w, h, 'F')
 
+  const padding = 5.5
+  const childContainerWidth = colWidth - 2 * padding
+  const ys = []
+  const xs = []
+
+  const box = []
+  const text = []
+  const line = []
+
+  // THIS ITERATION DRAWS THE COLUMN CONTAINERS AND HEADERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
-    const { backgroundColor } = businessCapabilities[i] || {}
+    const { name = '', backgroundColor } = businessCapabilities[i] || {}
+    // COLUMN BOX
+    const x0Col = x0 + i * (colWidth + colSpacing)
     doc.setFillColor(backgroundColor)
-    doc.roundedRect(x0 + i * (colWidth + colSpacing), y0, colWidth, h, 1.6, 1.6, 'F')
+    doc.roundedRect(x0Col, y0, colWidth, h, 1.6, 1.6, 'F')
+
+    // BC NAME
+    let y = y0 + 2 * padding
+    const childTitleFontSize = 16
+    const childTitleLineSpacing = 8
+    doc.setFont('Axiforma-Bold')
+    doc.setFontSize(childTitleFontSize)
+    doc.splitTextToSize(name.toUpperCase(), childContainerWidth - padding / 2)
+      .forEach(line => {
+        const txtWidth = (doc.getStringUnitWidth(line) * childTitleFontSize) / (72 / 25.6)
+        const x = x0Col + padding + (childContainerWidth - txtWidth) / 2
+        text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#ffffff' })
+        y = y + childTitleLineSpacing
+      })
+    ys[i] = y
+    xs[i] = x0Col + padding
   }
+
+  // SPACING BETWEEN THE TALLEST HEADER AND CHILD CONTAINERS
+  y0 = Math.max(...ys) + padding
+
+  // THIS ITERATION DRAWS THE CHID CONTAINERS
+  for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
+    const { backgroundColor, children = [] } = businessCapabilities[i] || {}
+    const x0 = xs[i]
+    let y = y0 - padding
+
+    const fontSize = 10
+
+    doc.setFontSize(fontSize)
+
+    children.forEach(child => {
+      y = y + padding / 2
+      const childY0 = y
+      const { name, children: grandChildren = [] } = child
+      doc.setFont('Axiforma-Bold')
+      doc.splitTextToSize(name, childContainerWidth - padding / 2)
+        .forEach(line => {
+          y += padding
+          const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
+          const x = x0 + (childContainerWidth - txtWidth) / 2
+          text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
+        })
+      y += padding / 2
+      line.push([x0, y, x0 + childContainerWidth, y, backgroundColor, 0.4])
+      y += padding / 4
+
+      doc.setFont('Axiforma-Regular')
+      grandChildren
+        .forEach(({ name }, i) => {
+          y -= padding / 4
+          const isLast = i === grandChildren.length - 1
+          doc.splitTextToSize(name, childContainerWidth - padding / 2)
+            .forEach(line => {
+              y += padding
+              const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
+              const x = x0 + (childContainerWidth - txtWidth) / 2
+              text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
+            })
+          if (!isLast) {
+            y += padding / 2
+            line.push([x0, y, x0 + childContainerWidth, y, '#e5e7eb'])
+            y += padding / 4
+          }
+        })
+      y += padding
+      box.push([x0, childY0, childContainerWidth, y - childY0 - padding / 2])
+    })
+  }
+
+  doc.setFillColor('#ffffff')
+  box.forEach(([x0, y0, w, h]) => doc.roundedRect(x0, y0, w, h, 1.6, 1.6, 'F'))
+
+  line
+    .forEach(([x1, y1, x2, y2, drawColor, width = 0.1]) => {
+      doc.setDrawColor(drawColor)
+      doc.setLineWidth(width)
+      doc.line(x1 + 0.01, y1, x2 - 0.01, y2)
+    })
+
+  text
+    .forEach(({ x, y, text, font, fontSize, textColor }) => {
+      doc.setFont(font)
+      doc.setFontSize(fontSize)
+      doc.setTextColor(textColor)
+      doc.text(x, y, text)
+    })
 }
 
 export const generatePdf = async (selectedBcMap = null) => {
   if (selectedBcMap === null) return
-  // eslint-disable-next-line
   const { name, children: businessCapabilities = [] } = selectedBcMap
   const [pageWidth, pageHeight] = [842, 597]
   const doc = new JsPDF({ orientation: 'landscape', unit: 'mm', format: [pageWidth, pageHeight] })
 
   // TITLE PLACEHOLDER
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(30, 30, 400, 30, 'F')
   doc.setFont('Axiforma-ExtraBold')
   doc.setFontSize(22)
   doc.setTextColor('#266ab9')
   doc.text(30, 30, 'BEST PRACTICES TO DEFINE')
   doc.setFontSize(50)
   doc.setTextColor('#1F2F4B')
-  doc.text(30, 50, 'Business Capability Maps')
+  const title = 'Business Capability Map'
+  const titleWidth = (doc.getStringUnitWidth(title) * 50) / (72 / 25.6)
+  doc.text(30, 50, title)
+  if (name.toLowerCase() !== 'default') {
+    doc.setFontSize(30)
+    doc.setTextColor('#8995AF')
+    doc.text(30 + titleWidth, 50, ` for ${name} Industry`)
+  }
 
   // LOGO PLACEHOLDER
-  // doc.setFillColor('#eeeeee')
-  // doc.rect(670, 30, 140, 30, 'F')
-  // TODO: fix logo image
   doc.setFont('Axiforma-ExtraBold')
   doc.setFontSize(50)
   doc.setTextColor('#1F2F4B')
