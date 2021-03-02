@@ -44,7 +44,7 @@
               'cursor-default': !editable
             }"
             style="min-width: 200px; width: 200px"
-            :style="`background: ${businessCapability.backgroundColor}`"
+            :style="`background: ${getBackgroundColor(businessCapability)}`"
             @mouseover="hovered = businessCapability.id"
             @mouseleave="hovered = null">
             <div class="bg-white w-full sticky top-0 z-10">
@@ -54,7 +54,7 @@
                   'rounded-md': !Array.isArray(businessCapability.children) || Array.isArray(businessCapability.children) && !businessCapability.children.length,
                   'rounded-t-md': Array.isArray(businessCapability.children) && businessCapability.children.length
                 }"
-                :style="`background: ${businessCapability.backgroundColor}`">
+                :style="`background: ${getBackgroundColor(businessCapability)}`">
                 <template
                   v-if="businessCapability.editing === true">
                   <input
@@ -100,9 +100,9 @@
                       <!-- Color Picker -->
                       <button
                         class="focus:outline-none text-white border border-gray-300 hover:bg-gray-600 transition-colors rounded-md"
-                        :style="`background: ${businessCapability.backgroundColor}`">
+                        :style="`background: ${getBackgroundColor(businessCapability)}`">
                         <input
-                          :value="businessCapability.backgroundColor"
+                          :value="getBackgroundColor(businessCapability)"
                           @change="$event => colorChangeHandler ($event, businessCapability)"
                           type="color"
                           class="h-5 w-5 opacity-0 cursor-pointer">
@@ -128,10 +128,10 @@
               :handle="editable ? '.handle' : '.no-handle'"
               :move="() => editable"
               class="flex-1 flex flex-col space-y-2.5 2xl:space-y-4 w-full p-2.5 2xl:p-4 pt-0 rounded-md"
-              :component-data="{style: `background: ${businessCapability.backgroundColor}`}">
+              :component-data="{style: `background: ${getBackgroundColor(businessCapability)}`}">
               <template #item="{element: child}">
                 <div class="bg-white rounded-md text-tiny w-full bc-child">
-                  <div :style="`background: ${businessCapability.backgroundColor}`">
+                  <div :style="`background: ${getBackgroundColor(businessCapability)}`">
                     <div
                       @mouseover.stop="hovered = child.id"
                       @mouseleave.stop="hovered = null"
@@ -142,7 +142,7 @@
                         'rounded-md': !Array.isArray(child.children) || Array.isArray(child.children) && !child.children.length,
                         'rounded-t-md border-b-2': Array.isArray(child.children) && child.children.length
                       }"
-                      :style="`border-color:${businessCapability.backgroundColor}`">
+                      :style="`border-color:${getBackgroundColor(businessCapability)}`">
                       <template v-if="child.editing === true">
                         <input
                           v-focus
@@ -334,6 +334,10 @@ export default {
     }
   },
   methods: {
+    getBackgroundColor (businessCapability = {}) {
+      const { backgroundColor = '#4D5C7D' } = businessCapability
+      return backgroundColor
+    },
     onNameInputBlur (evt, businessCapability, parent = null, abort = false) {
       const { id = null } = businessCapability
       const siblings = parent === null ? this.bcs : parent.children
@@ -383,7 +387,7 @@ export default {
     async exportAsPdf () {
       const { name } = this.selectedBcMap
       const { default: generatePdf } = await import('@/helpers/generatePdf')
-      const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)))
+      const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)), this.getBackgroundColor())
       const { saveAs } = await import('file-saver')
       saveAs(output, `${name}.pdf`)
     }

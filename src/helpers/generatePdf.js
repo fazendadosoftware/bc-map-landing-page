@@ -80,7 +80,7 @@ const bestPracticesSectionGenerator = async doc => {
     })
 }
 
-const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
+const bcMapSectionGenerator = async (doc, businessCapabilities = [], defaultBackgroundColor = '#4D5C7D') => {
   let [x0, y0, w, h] = [30, 80, 640, 480]
   const colSpacing = 5
   const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
@@ -97,7 +97,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
 
   // THIS ITERATION DRAWS THE COLUMN CONTAINERS AND HEADERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
-    const { name = '', backgroundColor } = businessCapabilities[i] || {}
+    const { name = '', backgroundColor = defaultBackgroundColor } = businessCapabilities[i] || {}
     // COLUMN BOX
     const x0Col = x0 + i * (colWidth + colSpacing)
     doc.setFillColor(backgroundColor)
@@ -192,7 +192,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
     })
 }
 
-export const generatePdf = async (selectedBcMap = null) => {
+export const generatePdf = async (selectedBcMap = null, defaultBackgroundColor = '#4D5C7D') => {
   if (selectedBcMap === null) return
   const { name, children: businessCapabilities = [] } = selectedBcMap
   const [pageWidth, pageHeight] = [842, 597]
@@ -224,7 +224,7 @@ export const generatePdf = async (selectedBcMap = null) => {
   doc.addImage(leanixLogo, 'PNG', 745 - logoImgWidth - 5, 45 - logoImgHeight + 3.7, logoImgWidth, logoImgHeight)
 
   // BC MAP PLACEHOLDER
-  bcMapSectionGenerator(doc, businessCapabilities)
+  bcMapSectionGenerator(doc, businessCapabilities, defaultBackgroundColor)
 
   // BEST PRACTICES PLACEHOLDER
   bestPracticesSectionGenerator(doc)
