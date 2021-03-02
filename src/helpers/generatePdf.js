@@ -145,28 +145,29 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = []) => {
           const x = x0 + (childContainerWidth - txtWidth) / 2
           text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
         })
-      y += padding / 2
-      line.push([x0, y, x0 + childContainerWidth, y, backgroundColor, 0.4])
-      y += padding / 4
-
-      doc.setFont('Axiforma-Regular')
-      grandChildren
-        .forEach(({ name }, i) => {
-          y -= padding / 4
-          const isLast = i === grandChildren.length - 1
-          doc.splitTextToSize(name, childContainerWidth - padding / 2)
-            .forEach(line => {
-              y += padding
-              const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
-              const x = x0 + (childContainerWidth - txtWidth) / 2
-              text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
-            })
-          if (!isLast) {
-            y += padding / 2
-            line.push([x0, y, x0 + childContainerWidth, y, '#e5e7eb'])
-            y += padding / 4
-          }
-        })
+      if (grandChildren.length) {
+        y += padding / 2
+        line.push([x0, y, x0 + childContainerWidth, y, backgroundColor, 0.4])
+        y += padding / 4
+        doc.setFont('Axiforma-Regular')
+        grandChildren
+          .forEach(({ name }, i) => {
+            y -= padding / 4
+            const isLast = i === grandChildren.length - 1
+            doc.splitTextToSize(name, childContainerWidth - padding / 2)
+              .forEach(line => {
+                y += padding
+                const txtWidth = (doc.getStringUnitWidth(line) * fontSize) / (72 / 25.6)
+                const x = x0 + (childContainerWidth - txtWidth) / 2
+                text.push({ x, y, text: line, font: doc.getFont().fontName, fontSize: doc.getFontSize(), textColor: '#1F2F4B' })
+              })
+            if (!isLast) {
+              y += padding / 2
+              line.push([x0, y, x0 + childContainerWidth, y, '#e5e7eb'])
+              y += padding / 4
+            }
+          })
+      }
       y += padding
       box.push([x0, childY0, childContainerWidth, y - childY0 - padding / 2])
     })
