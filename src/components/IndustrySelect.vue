@@ -54,7 +54,11 @@
             <div
               v-for="{ item, refIndex } in ftsSearchResult"
               :key="refIndex"
-              class="first:bg-leanix-gray-light px-24px py-12px hover:bg-gray-100 transition-colors cursor-pointer"
+              class="px-24px py-12px hover:bg-gray-100 transition-colors"
+              :class="{
+                'bg-leanix-gray-light cursor-default': item.id === selectedBcMap.id,
+                'cursor-pointer': item.id !== selectedBcMap.id
+              }"
               @click="selectOption(item)">
               {{item.name}}
             </div>
