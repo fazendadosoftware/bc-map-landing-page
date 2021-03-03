@@ -35,7 +35,7 @@
         item-key="id"
         :handle="editable ? '.handle' : '.no-handle'"
         :move="() => editable"
-        class="flex-1 flex justify-between 2xl:justify-center items-start space-x-2.5 2xl:space-x-4 overflow-auto relative bc-cols-container">
+        class="flex-1 flex justify-between mx-auto 2xl:mx-0 2xl:justify-center items-start space-x-2.5 2xl:space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
           <div
             class="handle flex flex-col rounded-md space-y-2.5 2xl:space-y-4 shadow-xl bc-col"
