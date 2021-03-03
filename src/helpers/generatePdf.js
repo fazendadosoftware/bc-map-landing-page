@@ -125,7 +125,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = [], defaultBack
 
   // THIS ITERATION DRAWS THE CHID CONTAINERS
   for (const i of Array(Math.min(maxColumns, businessCapabilities.length)).keys()) {
-    const { backgroundColor, children = [] } = businessCapabilities[i] || {}
+    const { backgroundColor = defaultBackgroundColor, children = [] } = businessCapabilities[i] || {}
     const x0 = xs[i]
     let y = y0 - padding
 
