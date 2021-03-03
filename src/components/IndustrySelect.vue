@@ -138,7 +138,9 @@ export default {
   },
   methods: {
     resetFtsSearchResults () {
-      this.ftsSearchResult = this.bcMaps.map((item, refIndex) => ({ item, refIndex }))
+      this.ftsSearchResult = this.bcMaps
+        .map((item, refIndex) => ({ item, refIndex }))
+        .sort(({ item: { name: A } }, { item: { name: B } }) => B.toLowerCase() === 'default' ? 1 : A < B ? -1 : A > B ? 1 : 0)
     },
     selectOption (bcMap) {
       this.opened = false
