@@ -1,7 +1,7 @@
 <template>
   <div class="min-w-full text-xs flex flex-col pt-0 px-3 flex flex-col text-leanix-gray-dark" ref="container">
     <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-16">
-      <span class="w-full my-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
+      <span class="w-full my-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-4 flex justify-center">
         Business Capability Map
       </span>
       <industry-select
@@ -24,10 +24,10 @@
     <!-- Horizontal overflow container for bc columns -->
     <div class="flex-1 overflow-x-auto flex flex-col">
       <transition
-        enter-active-class="transition-opacity duration-1000"
+        enter-active-class="transition-opacity duration-100"
         enter-from-class="opacity-0"
         enter-to-class="opacity-100"
-        leave-active-class="transition-opacity duration-1000"
+        leave-active-class="transition-opacity duration-100"
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
         mode="out-in">
@@ -71,7 +71,7 @@
                   <template v-else>
                     <span class="bc-col-header">{{businessCapability.name}}</span>
                     <transition
-                      enter-active-class="transition-opacity delay-500"
+                      enter-active-class="transition-opacity"
                       enter-from-class="opacity-0"
                       enter-to-class="opacity-100"
                       leave-active-class="transition-opacity"
