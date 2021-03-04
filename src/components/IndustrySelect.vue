@@ -54,10 +54,10 @@
             <div
               v-for="{ item, refIndex } in ftsSearchResult"
               :key="refIndex"
-              class="px-24px py-12px hover:bg-gray-100 transition-colors"
+              class="px-24px py-12px transition-colors"
               :class="{
                 'bg-leanix-gray-light cursor-default': item.id === selectedBcMap.id,
-                'cursor-pointer': item.id !== selectedBcMap.id
+                'cursor-pointer hover:bg-leanix-gray-light': item.id !== selectedBcMap.id
               }"
               @click="selectOption(item)">
               {{item.name}}
@@ -140,7 +140,7 @@ export default {
     resetFtsSearchResults () {
       this.ftsSearchResult = this.bcMaps
         .map((item, refIndex) => ({ item, refIndex }))
-        .sort(({ item: { name: A } }, { item: { name: B } }) => B.toLowerCase() === 'default' ? 1 : A < B ? -1 : A > B ? 1 : 0)
+        .sort(({ item: { name: A } }, { item: { name: B } }) => A.toLowerCase() === 'default' ? 0 : B.toLowerCase() === 'default' ? 1 : A < B ? -1 : A > B ? 1 : 0)
     },
     selectOption (bcMap) {
       this.opened = false

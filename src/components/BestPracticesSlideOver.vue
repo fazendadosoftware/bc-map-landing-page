@@ -1,6 +1,6 @@
 <template>
   <section
-    class="absolute inset-y-0 right-0 pl-10 max-w-full flex z-50 text-leanix-gray-dark"
+    class="fixed inset-y-0 right-0 pl-10 max-w-full flex z-50 text-leanix-gray-dark"
     aria-labelledby="slide-over-heading"
     v-click-outside="() => $emit('close')"
     v-escape="() => $emit('close')">
