@@ -1,5 +1,5 @@
 <template>
-  <div class="w-full text-xs flex flex-col pt-0 px-3 2xl:px-4 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
+  <div class="min-w-full text-xs flex flex-col pt-0 px-3 2xl:px-4 flex flex-col h-screen text-leanix-gray-dark absolute overflow-x-hidden" ref="container">
     <div class="flex flex-wrap justify-center items-center bg-white lg:py-8 lg:px-16">
       <span class="w-full my-2 lg:mb-0 lg:w-auto text-leanix-gray-darkest font-extra-bold text-xl lg:text-2xl lg:mr-8 lg:pb-2 flex justify-center">
         Business Capability Map
@@ -35,7 +35,7 @@
         item-key="id"
         :handle="editable ? '.handle' : '.no-handle'"
         :move="() => editable"
-        class="flex-1 flex justify-between 2xl:justify-center items-start space-x-3 2xl:space-x-4 overflow-auto relative bc-cols-container">
+        class="flex-1 flex justify-center items-start px-3 space-x-3 2xl:px-4 2xl:space-x-4 overflow-auto relative bc-cols-container">
         <template #item="{element: businessCapability}">
           <div
             class="handle flex flex-col rounded-md space-y-3 2xl:space-y-4 shadow-xl bc-col"
