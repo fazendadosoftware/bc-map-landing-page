@@ -24,10 +24,10 @@
     <!-- Horizontal overflow container for bc columns -->
     <div class="flex-1 overflow-x-auto flex flex-col">
       <transition
-        enter-active-class="transition-opacity duration-100"
+        enter-active-class="transition-opacity duration-300"
         enter-from-class="opacity-0"
         enter-to-class="opacity-100"
-        leave-active-class="transition-opacity duration-100"
+        leave-active-class="transition-opacity duration-700"
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
         mode="out-in">
