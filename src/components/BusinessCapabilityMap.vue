@@ -37,7 +37,7 @@
           item-key="id"
           :handle="editable ? '.handle' : '.no-handle'"
           :move="() => editable"
-          class="mx-auto flex-1 flex justify-start items-start px-3 space-x-3 relative bc-cols-container">
+          class="mx-auto flex-1 flex justify-start items-start space-x-3 relative bc-cols-container">
           <template #item="{element: businessCapability}">
             <div
               class="handle flex flex-col rounded-md space-y-3 shadow-xl bc-col"
