@@ -36,15 +36,6 @@ module.exports = {
       minHeight: {
         coltitle: '70px',
         coltitlesm: '60px'
-      },
-      animation: {
-        bouncehorizontal: 'bouncehorizontal 2s ease-in-out infinite'
-      },
-      keyframes: {
-        bouncehorizontal: {
-          '0%, 100%': { transform: 'translateX(-15%)' },
-          '50%': { transform: 'translateX(0)' }
-        }
       }
     }
   },

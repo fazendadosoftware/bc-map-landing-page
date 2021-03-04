@@ -29,7 +29,8 @@
         enter-to-class="opacity-100"
         leave-active-class="transition-opacity duration-1000"
         leave-from-class="opacity-100"
-        leave-to-class="opacity-0">
+        leave-to-class="opacity-0"
+        mode="out-in">
         <draggable
           v-if="selectedBcMap"
           :list="selectedBcMap.children"
@@ -268,13 +269,11 @@
             </div>
           </template>
         </draggable>
-        <div v-else class="h-full flex justify-center items-center text-xl 2xl:text-4xl">
-          <div class="flex items-center">
-            <span class="mr-4">Loading</span>
-            <svg class="h-4 w-4 2xl:h-8 2xl:w-8 animate-spin transform rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <div v-else class="flex justify-center items-center text-xl 2xl:text-4xl">
+          <span class="mr-4 py-1.5 opacity-50">Loading</span>
+            <svg class="opacity-50 h-4 w-4 2xl:h-8 2xl:w-8 animate-spin transform rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
             </svg>
-          </div>
         </div>
       </transition>
     </div>
