@@ -1,9 +1,7 @@
 <template>
-  <div class="bg-gray-200 sticky top-0 h-40 border-b"/>
+  <div class="bg-gray-200 sticky top-0 h-40 border-b z-50"/>
   <business-capability-map />
-  <div>casjsaoi</div>
-  <div>fjwoejfoiwejofejwio</div>
-
+  <div class="mt-8 bg-gray-200 h-60 border-t"/>
 </template>
 
 <script>
