@@ -31,15 +31,12 @@
         leave-from-class="opacity-100"
         leave-to-class="opacity-0"
         mode="out-in">
-        <draggable
+        <div
           v-if="selectedBcMap"
-          :list="selectedBcMap.children"
-          :group="{ name: 'g1' }"
-          item-key="id"
-          :handle="editable ? '.handle' : '.no-handle'"
-          :move="() => editable"
           class="mx-auto flex-1 flex justify-start items-start space-x-3 relative bc-cols-container">
-          <template #item="{element: businessCapability}">
+          <template
+            v-for="businessCapability in selectedBcMap.children"
+            :key="businessCapability.id">
             <div
               class="handle flex flex-col rounded-md space-y-3 shadow-xl bc-col"
               :class="{
@@ -124,15 +121,10 @@
                   </template>
                 </div>
               </div>
-              <draggable
-                :list="businessCapability.children"
-                :group="{ name: 'g2' }"
-                item-key="id"
-                :handle="editable ? '.handle' : '.no-handle'"
-                :move="() => editable"
-                class="flex-1 flex flex-col space-y-3 2xl:space-y-4 w-full p-3 2xl:p-4 pt-0 rounded-md"
-                :component-data="{style: `background: ${getBackgroundColor(businessCapability)}`}">
-                <template #item="{element: child}">
+              <div class="flex-1 flex flex-col space-y-3 2xl:space-y-4 w-full p-3 2xl:p-4 pt-0 rounded-md">
+                <template
+                  v-for="child in businessCapability.children"
+                  :key="child.id">
                   <div class="bg-white rounded-md text-tiny w-full bc-child">
                     <div :style="`background: ${getBackgroundColor(businessCapability)}`">
                       <div
@@ -265,10 +257,10 @@
                     </draggable>
                   </div>
                 </template>
-              </draggable>
+              </div>
             </div>
           </template>
-        </draggable>
+        </div>
         <div v-else class="flex justify-center items-center text-xl 2xl:text-4xl">
           <span class="mr-4 py-1.5 opacity-50">Loading</span>
             <svg class="opacity-50 h-4 w-4 2xl:h-8 2xl:w-8 animate-spin transform rotate-180" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -393,12 +385,6 @@ export default {
       const { saveAs } = await import('file-saver')
       saveAs(output, `${name}.pdf`)
     }
-    /*
-    async exportAsSvg () {
-      const { default: generateSvg } = await import('@/helpers/generateSvg')
-      generateSvg(this.$refs.container, this.selectedBcMap)
-    }
-    */
   },
   async created () {
     await this.fetchBcs()
