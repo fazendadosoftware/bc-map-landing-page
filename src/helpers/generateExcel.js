@@ -25,15 +25,16 @@ const generateExcel = async (selectedBcMap = null) => {
       if (backgroundColor !== null) row.description = JSON.stringify({ backgroundColor })
       return row
     })
-  rows.unshift({ id: 'ID', type: 'Type', name: 'Name', relToParent: 'Parent', description: 'Description' })
+  // rows.unshift({ id: 'ID', type: 'Type', name: 'Name', relToParent: 'Parent', description: 'Description' })
+  rows.unshift({ id: 'ID', type: 'Type', name: 'Name', relToParent: 'Parent' })
   const workbook = new ExcelJS.Workbook()
   const sheetA = workbook.addWorksheet('Export 2021-02-17', { views: [{ state: 'frozen', ySplit: 2, xSplit: 3 }] })
   sheetA.columns = [
     { header: 'id', key: 'id', width: 5 },
     { header: 'type', key: 'type', width: 20 },
     { header: 'name', key: 'name', width: 40 },
-    { header: 'relToParent', key: 'relToParent', width: 80 },
-    { header: 'description', key: 'description', width: 80 }
+    { header: 'relToParent', key: 'relToParent', width: 80 }
+    // { header: 'description', key: 'description', width: 80 }
   ]
   sheetA.addRows(rows)
   sheetA.getRows(1, 2)
