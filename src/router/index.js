@@ -1,16 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import BusinessCapabilityMap from '@/components/BusinessCapabilityMap'
 
 const routes = [
   {
     path: '/',
     name: 'BusinessCapabilityMap',
     props: true,
-    component: () => import(/* webpackChunkName: "BusinessCapabilityMap" */ '@/components/BusinessCapabilityMap.vue')
+    component: BusinessCapabilityMap
   },
   {
     path: '/:industry',
     name: 'industry',
-    component: () => import(/* webpackChunkName: "BusinessCapabilityMap" */ '@/components/BusinessCapabilityMap.vue')
+    component: BusinessCapabilityMap
   }
 ]
 
