@@ -82,8 +82,8 @@ export default {
         const { bcMaps } = await fetch('https://bcmaps.fazendadosoftware.com/bcMaps.json')
           .then(response => response.json())
         this.bcMaps = bcMaps
-        const { name, params: { industry } } = this.$route
-        const targetIndustry = name === 'industry' ? industry : 'Default'
+        const { routeIndustry = null } = this
+        const targetIndustry = routeIndustry !== null ? routeIndustry : 'Default'
         const targetBcMap = bcMaps.find(({ name }) => name === targetIndustry) || null
         this.selectedBcMap = targetBcMap
       } finally {
@@ -105,11 +105,23 @@ export default {
       saveAs(output, `${name}.pdf`)
     }
   },
+  computed: {
+    routeIndustry () {
+      const { params: { industry = null } } = this.$route
+      return industry
+    }
+  },
   watch: {
     selectedBcMap (businessCapabilityMap) {
-      if (businessCapabilityMap === null) this.$router.push({ name: 'not-found' })
+      if (businessCapabilityMap === null) return
       const { name: industry } = businessCapabilityMap
       this.$router.push({ name: 'industry', params: { industry, selectedBcMap: JSON.stringify(businessCapabilityMap) } })
+    },
+    routeIndustry (industry = null) {
+      if (this.loading) return
+      if (industry === null) industry = 'Default'
+      const targetBcMap = this.bcMaps.find(({ name }) => name === industry) || null
+      this.selectedBcMap = targetBcMap
     }
   },
   async created () {
