@@ -56,8 +56,8 @@
               :key="refIndex"
               class="px-24px py-12px transition-colors"
               :class="{
-                'bg-leanix-gray-light cursor-default': item.id === selectedBcMap.id,
-                'cursor-pointer hover:bg-leanix-gray-light': item.id !== selectedBcMap.id
+                'bg-leanix-gray-light cursor-default': item.id === selectedBcMap?.id,
+                'cursor-pointer hover:bg-leanix-gray-light': item.id !== selectedBcMap?.id
               }"
               @click="selectOption(item)">
               {{item.name}}
