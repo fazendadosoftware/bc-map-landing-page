@@ -79,7 +79,7 @@ export default {
     async fetchBcs () {
       this.loading = true
       try {
-        const { bcMaps } = await fetch('https://bcmaps.fazendadosoftware.com/bcMaps.json')
+        const { bcMaps } = await fetch('https://functions-westeurope-prod-bc-maps.azurewebsites.net/api/WebhookListener')
           .then(response => response.json())
         this.bcMaps = bcMaps
         const { routeIndustry = null } = this
