@@ -43,7 +43,7 @@ const generateExcel = async (selectedBcMap = null) => {
       row._cells.forEach(cell => { cell.fill = { type: 'pattern', pattern: 'solid', fgColor: { argb: 'BFBFBF' } } })
     })
   const buf = await workbook.xlsx.writeBuffer()
-  saveAs(new Blob([buf]), `${industry}.xlsx`)
+  saveAs(new Blob([buf]), `LeanIX_Business-Capability-Map_${industry}.xlsx`)
 }
 
 export default generateExcel

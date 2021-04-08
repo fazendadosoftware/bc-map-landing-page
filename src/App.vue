@@ -102,7 +102,7 @@ export default {
       const { default: generatePdf } = await import('@/helpers/generatePdf')
       const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)))
       const { saveAs } = await import('file-saver')
-      saveAs(output, `${name}.pdf`)
+      saveAs(output, `LeanIX_Business-Capability-Map_${name}.pdf`)
     }
   },
   computed: {
