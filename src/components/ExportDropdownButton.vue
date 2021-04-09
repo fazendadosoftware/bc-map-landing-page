@@ -5,6 +5,7 @@
     v-escape="() => { opened = false }">
     <button
       @click="opened = !opened"
+      action="show_export_options"
       class="bg-leanix-blue text-white px-24px py-12px flex items-center focus:outline-none hover:opacity-75 transition-opacity"
       :class="{
         'opacity-75': opened
@@ -22,13 +23,16 @@
       <div
         v-if="opened"
         class="absolute mt-1 right-0 w-36 bg-white z-50 shadow-xl border border-leanix-gray-dropdown rounded">
-        <div
+        <button
           v-for="(option, i) in exportOptions"
           :key="i"
+          action="export"
+          :industry="selectedBcMap.name"
+          :file_type="option.fileType"
           class="px-24px py-12px cursor-pointer hover:bg-gray-200 transition-colors border-b border-leanix-gray-light"
           @click="opened = !opened; typeof option.callback === 'function' ? option.callback() : undefined">
           {{option.label}}
-        </div>
+        </button>
       </div>
     </transition>
   </div>
@@ -48,16 +52,24 @@ export default {
     ClickOutside,
     Escape
   },
+  props: {
+    selectedBcMap: {
+      type: Object,
+      required: false
+    }
+  },
   setup () {
     const { emit } = getCurrentInstance()
     const opened = ref(false)
     const exportOptions = ref([
       {
         label: 'Export as Excel',
+        fileType: 'xlsx',
         callback: () => emit('export-excel')
       },
       {
         label: 'Export as PDF',
+        fileType: 'pdf',
         callback: () => emit('export-pdf')
       }
       /*

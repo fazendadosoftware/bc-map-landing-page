@@ -17,6 +17,7 @@
           Show Best Practices
         </div>
         <export-dropdown-button
+          :selected-bc-map="selectedBcMap"
           @export-excel="exportAsExcel"
           @export-pdf="exportAsPdf"/>
       </div>

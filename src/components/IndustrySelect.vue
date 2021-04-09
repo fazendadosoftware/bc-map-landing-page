@@ -16,6 +16,7 @@
       v-escape="() => { opened = false }">
       <button
         @click="opened = true"
+        action="show_industry_list"
         class="px-24px py-12px focus:outline-none flex items-center w-full transition-colors"
         :class="{
           'text-leanix-gray-lighter': selectedBcMap?.name.toLowerCase() === 'default'
@@ -51,17 +52,19 @@
           <div
             class="absolute bottom-0 transform translate-y-full inset-x-0 bg-white border border-leanix-gray-dropdown rounded-b -mx-px shadow-xl overflow-y-auto"
             style="max-height: 200px">
-            <div
+            <button
               v-for="{ item, refIndex } in ftsSearchResult"
               :key="refIndex"
-              class="px-24px py-12px transition-colors"
+              action="select_industry"
+              :industry="item.name"
+              class="w-full text-left px-24px py-12px transition-colors"
               :class="{
                 'bg-leanix-gray-light cursor-default': item.id === selectedBcMap?.id,
                 'cursor-pointer hover:bg-leanix-gray-light': item.id !== selectedBcMap?.id
               }"
               @click="selectOption(item)">
               {{item.name}}
-            </div>
+            </button>
             <div
               v-if="ftsSearchResult.length === 0"
               class="first:bg-leanix-gray-light px-24px py-12px hover:bg-gray-100 transition-colors cursor-pointer">
