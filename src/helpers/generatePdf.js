@@ -181,6 +181,12 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = [], defaultBack
       const childY0 = y
       const { name, children: grandChildren = [] } = child
       doc.setFont('Axiforma-Bold')
+      const lines = doc.splitTextToSize(name, childContainerWidth - padding / 2)
+      const textHeight = lines.length * padding
+      // ENSURE THAT CHILD HAS AT LEAST MIN_TEXT_HEIGHT IF THERE ARE NO GRANDCHILDREN
+      const minTextHeight = 15
+      const p = !grandChildren.length && (textHeight < minTextHeight) ? (minTextHeight - textHeight) / 2 : 0
+      y += p
       doc.splitTextToSize(name, childContainerWidth - padding / 2)
         .forEach(line => {
           y += padding
@@ -211,6 +217,7 @@ const bcMapSectionGenerator = async (doc, businessCapabilities = [], defaultBack
             }
           })
       }
+      y += p
       y += padding
       box.push([x0, childY0, childContainerWidth, y - childY0 - padding / 2])
     })

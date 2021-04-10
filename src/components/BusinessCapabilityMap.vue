@@ -27,17 +27,18 @@
             <template
               v-for="child in businessCapability.children"
               :key="child.id">
-              <div class="bg-white rounded-md text-tiny w-full bc-child">
+              <div
+                class="bg-white rounded-md text-tiny w-full bc-child">
                 <div :style="`background: ${getBackgroundColor(businessCapability)}`">
                   <div
                     @mouseover.stop="hovered = child.id"
                     @mouseleave.stop="hovered = null"
-                    class="cursor-default handle bg-white hover:bg-gray-200 transition-colors font-axiformabold p-1 text-center sticky top-0 relative bc-child-header"
+                    class="cursor-default handle bg-white hover:bg-gray-200 transition-colors font-axiformabold p-1 text-center sticky top-0 relative flex items-center justify-center bc-child-header"
                     :class="{
                       'rounded-md': !Array.isArray(child.children) || Array.isArray(child.children) && !child.children.length,
                       'rounded-t-md border-b-2': Array.isArray(child.children) && child.children.length
                     }"
-                    :style="`border-color:${getBackgroundColor(businessCapability)}`">
+                    :style="`border-color:${getBackgroundColor(businessCapability)}; min-height: ${!child.children.length ? '50px' : '0'}`">
                     <span>{{child.name}}</span>
                   </div>
                 </div>
