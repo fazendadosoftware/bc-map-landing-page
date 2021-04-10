@@ -61,6 +61,7 @@
 import IndustrySelect from '@/components/IndustrySelect.vue'
 import ExportDropdownButton from '@/components/ExportDropdownButton.vue'
 import BestPracticesSlideOver from '@/components/BestPracticesSlideOver.vue'
+const { NODE_ENV: env = null } = process.env
 
 export default {
   components: {
@@ -79,9 +80,13 @@ export default {
   methods: {
     async fetchBcs () {
       this.loading = true
+      let bcMaps = []
       try {
-        const { bcMaps } = await fetch('https://functions-westeurope-prod-bc-maps.azurewebsites.net/api/WebhookListener')
-          .then(response => response.json())
+        bcMaps = env === 'development'
+          ? require('@/test/data/bcmaps.json')
+          : await fetch('https://functions-westeurope-prod-bc-maps.azurewebsites.net/api/WebhookListener')
+            .then(response => response.json())
+            .then(({ bcMaps }) => bcMaps)
         this.bcMaps = bcMaps
         const { routeIndustry = null } = this
         const targetIndustry = routeIndustry !== null ? routeIndustry : 'Default'
@@ -100,7 +105,7 @@ export default {
     },
     async exportAsPdf () {
       const { name } = this.selectedBcMap
-      const { default: generatePdf } = await import('@/helpers/generatePdf')
+      const { default: generatePdf } = await import('@/helpers/generatePdfLongLayout')
       const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)))
       const { saveAs } = await import('file-saver')
       saveAs(output, `LeanIX_Business-Capability-Map_${name}.pdf`)

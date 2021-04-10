@@ -29,7 +29,7 @@
           action="export"
           :industry="selectedBcMap.name"
           :file_type="option.fileType"
-          class="px-24px py-12px cursor-pointer hover:bg-gray-200 transition-colors border-b border-leanix-gray-light"
+          class="w-full px-24px py-12px cursor-pointer hover:bg-gray-200 transition-colors border-b border-leanix-gray-light"
           @click="opened = !opened; typeof option.callback === 'function' ? option.callback() : undefined">
           {{option.label}}
         </button>

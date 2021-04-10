@@ -11,7 +11,7 @@ import icon7 from '@/assets/img/icons/best-practices-7.png'
 import icon8 from '@/assets/img/icons/best-practices-8.png'
 import bestPractices from '@/assets/data/bestPractices.json'
 
-const bestPracticesIcons = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
+let bestPracticesIcons = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
 
 const isBoldOpen = (arrayLength, valueBefore = false) => {
   const isEven = arrayLength % 2 === 0
@@ -51,44 +51,14 @@ const splitTextWidthBoldMarks = (doc, text = '', {
 
 // https://github.com/MrRio/jsPDF/issues/819
 const bestPracticesSectionGenerator = async doc => {
-  const fontSize = 16
-  const lineSpacing = 8
-  let { title, description, paragraphs = [] } = bestPractices
-  description = description.replace(/<\/?strong>/g, '**')
-  const [x0, y0, w] = [685, 80, 150, 480]
-
-  // TITLE
-  doc.setFont('Axiforma-ExtraBold')
-  doc.setFontSize(20)
-  doc.setTextColor('#1F2F4B')
-  doc.text(x0, y0 + lineSpacing, title.toUpperCase())
-  let { y } = splitTextWidthBoldMarks(doc, description, { fontSize, lineSpacing, x0, y0: y0 + 7 + 14, width: w })
-
-  // Paragraph indent
-  y = y + lineSpacing * 1.5
-
-  paragraphs
-    .forEach(async ({ title, description }, i) => {
-      const iconSize = 10
-      doc.addImage(bestPracticesIcons[i], 'PNG', x0, y - iconSize / 2, iconSize, iconSize)
-      const textWidth = w - 20
-      doc.setFont('Axiforma-Bold')
-      doc.text(x0 + iconSize * 1.5, y, title)
-      y = y + lineSpacing;
-      ({ y } = splitTextWidthBoldMarks(doc, description, { fontSize, lineSpacing, x0: x0 + iconSize * 1.5, y0: y, width: textWidth }))
-      y = y + lineSpacing * 1.3
-    })
-}
-
-const bestPracticesSectionGeneratorHorizontal = async doc => {
   const lineSpacing = 7
   const fontSize = 14
   const [x0, y0, w] = [30, 515, 790, 60]
   let { title, description, paragraphs = [] } = bestPractices
   paragraphs = JSON.parse(JSON.stringify(paragraphs))
-  const icons = JSON.parse(JSON.stringify(bestPracticesIcons))
+  bestPracticesIcons = JSON.parse(JSON.stringify(bestPracticesIcons))
   paragraphs.splice(4, 1)
-  icons.splice(4, 1)
+  bestPracticesIcons.splice(4, 1)
 
   const sections = [{ title, description }, ...paragraphs]
   const sectionGap = 3
@@ -106,7 +76,7 @@ const bestPracticesSectionGeneratorHorizontal = async doc => {
         doc.text(x, y + lineSpacing / 2, title.toUpperCase())
       } else {
         const iconSize = 8
-        doc.addImage(icons[i - 1], 'PNG', x, y - iconSize / 2, iconSize, iconSize)
+        doc.addImage(bestPracticesIcons[i - 1], 'PNG', x, y - iconSize / 2, iconSize, iconSize)
       }
       y += 2 * lineSpacing
       if (i > 0) {
@@ -119,7 +89,7 @@ const bestPracticesSectionGeneratorHorizontal = async doc => {
 }
 
 const bcMapSectionGenerator = async (doc, businessCapabilities = [], defaultBackgroundColor = '#4D5C7D') => {
-  let [x0, y0, w, h] = [30, 80, 640, 480]
+  let [x0, y0, w, h] = [30, 80, 790, 400]
   const colSpacing = 5
   const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
   const colWidth = (w - (maxColumns - 1) * colSpacing) / maxColumns
