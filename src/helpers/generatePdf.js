@@ -11,7 +11,11 @@ import icon7 from '@/assets/img/icons/best-practices-7.png'
 import icon8 from '@/assets/img/icons/best-practices-8.png'
 import bestPractices from '@/assets/data/bestPractices.json'
 
+const MAX_VERTICAL_LAYOUT_COLS = 8
+
 const bestPracticesIcons = [icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8]
+
+const isVerticalLayout = (businessCapabilities = []) => businessCapabilities.length <= MAX_VERTICAL_LAYOUT_COLS
 
 const isBoldOpen = (arrayLength, valueBefore = false) => {
   const isEven = arrayLength % 2 === 0
@@ -50,7 +54,7 @@ const splitTextWidthBoldMarks = (doc, text = '', {
 }
 
 // https://github.com/MrRio/jsPDF/issues/819
-const bestPracticesSectionGenerator = async doc => {
+const bestPracticesVerticalSectionGenerator = async doc => {
   const fontSize = 16
   const lineSpacing = 8
   let { title, description, paragraphs = [] } = bestPractices
@@ -80,7 +84,8 @@ const bestPracticesSectionGenerator = async doc => {
     })
 }
 
-const bestPracticesSectionGeneratorHorizontal = async doc => {
+// eslint-disable-next-line
+const bestPracticesHorizontalSectionGenerator = async doc => {
   const lineSpacing = 7
   const fontSize = 14
   const [x0, y0, w] = [30, 515, 790, 60]
@@ -119,7 +124,7 @@ const bestPracticesSectionGeneratorHorizontal = async doc => {
 }
 
 const bcMapSectionGenerator = async (doc, businessCapabilities = [], defaultBackgroundColor = '#4D5C7D') => {
-  let [x0, y0, w, h] = [30, 80, 640, 480]
+  let [x0, y0, w, h] = isVerticalLayout(businessCapabilities) ? [30, 80, 640, 480] : [30, 80, 790, 400]
   const colSpacing = 5
   const maxColumns = Math.min(12, Math.max(businessCapabilities.length, 6))
   const colWidth = (w - (maxColumns - 1) * colSpacing) / maxColumns
@@ -265,7 +270,9 @@ export const generatePdf = async (selectedBcMap = null, defaultBackgroundColor =
   bcMapSectionGenerator(doc, businessCapabilities, defaultBackgroundColor)
 
   // BEST PRACTICES PLACEHOLDER
-  bestPracticesSectionGenerator(doc)
+  isVerticalLayout(businessCapabilities)
+    ? bestPracticesVerticalSectionGenerator(doc)
+    : bestPracticesHorizontalSectionGenerator(doc)
 
   // LEANIX.NET
   doc.setFont('Axiforma-ExtraBold')
