@@ -105,7 +105,7 @@ export default {
     },
     async exportAsPdf () {
       const { name } = this.selectedBcMap
-      const { default: generatePdf } = await import('@/helpers/generatePdfLongLayout')
+      const { default: generatePdf } = await import('@/helpers/generatePdf')
       const output = await generatePdf(JSON.parse(JSON.stringify(this.selectedBcMap)))
       const { saveAs } = await import('file-saver')
       saveAs(output, `LeanIX_Business-Capability-Map_${name}.pdf`)
