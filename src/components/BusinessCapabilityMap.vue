@@ -1,6 +1,6 @@
 <template>
   <!-- Horizontal overflow container for bc columns -->
-  <div class="flex-1 overflow-x-auto flex flex-col pb-3">
+  <div class="flex-1 overflow-x-auto flex flex-col pb-80px">
     <div
       class="mx-auto flex-1 flex justify-start items-start space-x-3 relative bc-cols-container">
       <template
