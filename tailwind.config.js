@@ -16,7 +16,8 @@ module.exports = {
       },
       padding: {
         '12px': '12px',
-        '24px': '24px'
+        '24px': '24px',
+        '80px': '80px'
       },
       borderRadius: {
         DEFAULT: '3px'
