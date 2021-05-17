@@ -84,7 +84,7 @@ export default {
       try {
         bcMaps = env === 'development'
           ? require('@/test/data/bcmaps.json')
-          : await fetch('https://functions-westeurope-prod-bc-maps.azurewebsites.net/api/WebhookListener')
+          : await fetch('https://f.hubspotusercontent30.net/hubfs/20065733/bcmaps/bcmaps.json')
             .then(response => response.json())
             .then(({ bcMaps }) => bcMaps)
         this.bcMaps = bcMaps
