@@ -1,11 +1,13 @@
 import ExcelJS from 'exceljs'
 import { saveAs } from 'file-saver'
 
+const fsHierarchySeparator = ' / '
+
 const unrollChildren = (bc = null, i, relToParent = null, accumulator = []) => {
   if (bc === null) throw Error('Root BC is required!')
   const { name, children = null, backgroundColor = null } = bc
   accumulator.push({ hierarchy: i, name, relToParent, level: i.length, backgroundColor })
-  relToParent = relToParent === null ? name : `${relToParent} / ${name}`
+  relToParent = relToParent === null ? name : `${relToParent}${fsHierarchySeparator}${name}`
   if (children !== null) children.forEach((bc, j) => unrollChildren(bc, [...i, j + 1], relToParent, accumulator))
   return accumulator
 }
@@ -18,10 +20,13 @@ const generateExcel = async (selectedBcMap = null) => {
       accumulator.push(...unrollChildren(bc, [i + 1], industry))
       return accumulator
     }, [{ type: 'BusinessCapability', name: industry, relToParent: null }])
-  const rows = unrolled
+  // extract the first node (rootNode) from the unrolled nodes
+  const [, ...nodes] = unrolled
+  const rows = nodes
     .sort(({ level: A }, { level: B }) => A > B ? 1 : A < B ? -1 : 0)
-    .map(({ name, relToParent = industry, backgroundColor = null }) => {
-      const row = { type: 'BusinessCapability', name, relToParent }
+    .map(({ name, relToParent = '', backgroundColor = null, level }) => {
+      relToParent = relToParent.split(fsHierarchySeparator).slice(1).join(fsHierarchySeparator)
+      const row = { type: 'BusinessCapability', name, relToParent, level }
       if (backgroundColor !== null) row.description = JSON.stringify({ backgroundColor })
       return row
     })
@@ -34,7 +39,6 @@ const generateExcel = async (selectedBcMap = null) => {
     { header: 'type', key: 'type', width: 20 },
     { header: 'name', key: 'name', width: 40 },
     { header: 'relToParent', key: 'relToParent', width: 80 }
-    // { header: 'description', key: 'description', width: 80 }
   ]
   sheetA.addRows(rows)
   sheetA.getRows(1, 2)

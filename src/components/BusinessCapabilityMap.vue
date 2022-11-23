@@ -1,6 +1,12 @@
 <template>
   <!-- Horizontal overflow container for bc columns -->
-  <div class="flex-1 overflow-x-auto flex flex-col pb-80px">
+  <div
+    class="flex-1 overflow-x-auto flex flex-col pb-80px select-none"
+    :class="{
+      'cursor-wait': dragging
+    }"
+    v-drag="dragHandler"
+    ref="bcMapContainer">
     <div
       class="mx-auto flex-1 flex justify-start items-start space-x-3 relative bc-cols-container">
       <template
@@ -72,13 +78,19 @@ export default {
   },
   data () {
     return {
-      hovered: false
+      hovered: false,
+      dragging: false
     }
   },
   methods: {
     getBackgroundColor (businessCapability = {}) {
       const { backgroundColor = '#4D5C7D' } = businessCapability
       return backgroundColor
+    },
+    dragHandler ({ movement: [x, y], dragging }) {
+      // const el = this.$refs.bcMapContainer
+      // this.dragging = dragging
+      // TBD
     }
   }
 }
